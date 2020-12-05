@@ -1,50 +1,48 @@
 import matplotlib.pyplot as plt
 import numpy as np 
 
-Pmin=2*10**5
-Vmin= 5
+Pmax=20*10**5
+Vmax= 0.05
+gama=1.66    # Monoatomic gas
 
-Pmax=10*10**5
-Vmax= 18
-
-VC= 11     # Diesel Cycle
-gama=1.66  # Monoatomic gas
-
-#------------------------------------------------------------------------------
 #Carnot Cycle
+VA= 0.012
+
 plt.figure()
 plt.subplot(221)
 
 K1C= Pmin*Vmax
-K2C= Pmax*(Vmin)**gama
-VA=(K2C/K1C)**(1/(gama-1))
 V = np.linspace(VA,Vmax,num=100)
 P=K1C/V
 plt.plot(V,P/10**3,'b-') 
 
+K2C= VA**(gama-1)*K1C
+Vmin=(K2C/Pmax)**(1/gama)
 V = np.linspace(Vmin,VA,num=100)
-P=K2C/(V**gama)       #se inverter P com V, ele calcula com o V anterior. Cuidado!
+P=K2C/(V**gama)       
 plt.plot(V,P/10**3,'b-') 
 
 K3C= Pmax*Vmin
 K4C= Pmin*(Vmax)**gama
-VCC=(K4C/K3C)**(1/(gama-1))
-V = np.linspace(Vmin,VCC,num=100)
+VC=(K4C/K3C)**(1/(gama-1))
+V = np.linspace(Vmin,VC,num=100)
 P=K3C/V
 plt.plot(V,P/10**3,'b-') 
 
-V = np.linspace(VCC,Vmax,num=100)
+V = np.linspace(VC,Vmax,num=100)
 P=K4C/(V**gama)
-
 plt.plot(V,P/10**3,'b-') 
+
 plt.title('Carnot Cycle',size='xx-large',color='b')
 plt.xlabel('Volume, $m^3$',{'fontsize': 13},horizontalalignment='right', x=0.8)
 plt.ylabel('Pressure,kPa',{'fontsize': 13})
 plt.grid(which='major', linestyle='--', linewidth='1.0', color='k') 
 plt.grid(which='minor', linestyle=':', linewidth='0.5', color='k') 
-plt.axis([4,20,100,1900])
-#------------------------------------------------------------------------------
+plt.axis([0.,0.06,1*10**5/10**3,21*10**5/10**3])
+
 # Otto Cycle
+Vmin=0.02
+
 plt.subplot(222)
 
 K1O= Pmin*Vmax**gama
@@ -52,9 +50,9 @@ V = np.linspace(Vmin,Vmax,num=100)
 P=K1O/V**gama
 plt.plot(V,P/10**3,'r-') 
 
-PB=K1O/Vmin**gama
+PA=K1O/Vmin**gama
 VminO=100*[Vmin]
-P = np.linspace(PB,Pmax,num=100)
+P = np.linspace(PA,Pmax,num=100)
 plt.plot(VminO,P/10**3,'r-') 
 
 K3O= Pmax*Vmin**gama
@@ -62,34 +60,35 @@ V = np.linspace(Vmin,Vmax,num=100)
 P=K3O/V**gama
 plt.plot(V,P/10**3,'r-') 
 
-PD=K3O/Vmax**gama
+PC=K3O/Vmax**gama
 VmaxO=100*[Vmax]
-P = np.linspace(Pmin,PD,num=100)
+P = np.linspace(Pmin,PC,num=100)
 plt.plot(VmaxO,P/10**3,'r-') 
 
 plt.title('Otto Cycle',size='xx-large',color='r')
-plt.xlabel('Volume, $m^3$',{'fontsize': 13},horizontalalignment='right', x=0.8)    #coloca o $ para elevar ao quadrado
+plt.xlabel('Volume, $m^3$',{'fontsize': 13},horizontalalignment='right', x=0.8)    
 plt.ylabel('Pressure,kPa',{'fontsize': 13})
 plt.grid(which='major', linestyle='--', linewidth='1.0', color='k') 
 plt.grid(which='minor', linestyle=':', linewidth='0.5', color='k') 
-plt.axis([4,20,100,1900])
-##------------------------------------------------------------------------------
+plt.axis([0.,0.06,1*10**5/10**3,21*10**5/10**3])
+
 # Diesel Cycle
+VB= 0.02   
+
 plt.subplot(223)
 
-K1D= Pmin*Vmax**gama
-PB=K1D/Vmin**gama
-V = np.linspace(Vmin,Vmax,num=100)
+K1D= Pmin*Vmax**gama   
+VminD=(K1D/Pmax)**(1/gama)   
+V = np.linspace(VminD,Vmax,num=100)
 P=K1D/V**gama
 plt.plot(V,P/10**3,'g-') 
 
-PBD= 100*[PB]
-PBD=np.around(PBD,decimals=1)  #Para ser inteiro
-V = np.linspace(Vmin,VC,num=100)
-plt.plot(V,PBD/10.**3,'g-') 
+PmaxD= np.around(100*[Pmax],decimals=1)  
+V = np.linspace(VminD,VB,num=100)        
+plt.plot(V,PmaxD/10.**3,'g-') 
 
-K3D= PB*VC**gama
-V = np.linspace(VC,Vmax,num=100)
+K3D= Pmax*VB**gama
+V = np.linspace(VB,Vmax,num=100)
 P=K3D/V**gama
 plt.plot(V,P/10**3,'g-') 
 
@@ -103,10 +102,11 @@ plt.xlabel('Volume, $m^3$',{'fontsize': 13},horizontalalignment='right', x=0.8)
 plt.ylabel('Pressure,kPa',{'fontsize': 13})
 plt.grid(which='major', linestyle='--', linewidth='1.0', color='k') 
 plt.grid(which='minor', linestyle=':', linewidth='0.5', color='k') 
-plt.axis([4,20,100,1900])
+plt.axis([0.,0.06,1*10**5/10**3,21*10**5/10**3])
 
-##------------------------------------------------------------------------------
-#Stirling Cycle
+#Stirling 
+Vmin= 0.02  
+
 plt.subplot(224)
 
 K1S= Pmin*Vmax
@@ -115,7 +115,6 @@ V = np.linspace(Vmin,Vmax,num=100)
 P=K1S/V
 plt.plot(V,P/10**3,'y-') 
 
-PD=K3D/Vmax**gama
 VminS=100*[Vmin]
 P = np.linspace(PA,Pmax,num=100)
 plt.plot(VminS,P/10**3,'y-')
@@ -126,7 +125,7 @@ V = np.linspace(Vmin,Vmax,num=100)
 P=K3S/V
 plt.plot(V,P/10**3,'y-') 
 
-VmaxS=100*[Vmax]
+VmaxS=100*[Vmax]   
 P = np.linspace(Pmin,PC,num=100)
 plt.plot(VmaxS,P/10**3,'y-')
 
@@ -135,8 +134,7 @@ plt.xlabel('Volume, $m^3$',{'fontsize': 13},horizontalalignment='right', x=0.8)
 plt.ylabel('Pressure,kPa',{'fontsize': 13})
 plt.grid(which='major', linestyle='--', linewidth='1.0', color='k') 
 plt.grid(which='minor', linestyle=':', linewidth='0.5', color='k') 
-plt.axis([4,20,100,1900])
+plt.axis([0.,0.06,1*10**5/10**3,21*10**5/10**3])
 
 plt.subplots_adjust(top=0.92, bottom=0.09, left=0.05, right=0.95, hspace=0.8, wspace=0.45)
 plt.show()
-
