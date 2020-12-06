@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np 
 
+Pmin=2*10**5
 Pmax=20*10**5
 Vmax= 0.05
 gama=1.66    # Monoatomic gas
